@@ -1,29 +1,47 @@
 import mongoose from "mongoose";
 
-const conversationSchema = new mongoose.Schema({
-  members: [{ type: mongoose.SchemaTypes.ObjectId, ref: "User" }],
-  convType : {
-    type  : String,
-    enum : ['GROUP','INDIVIDUAL']
+const messageSchema = new mongoose.Schema({
+  conversationId: {
+    type: mongoose.SchemaTypes.ObjectId,
+    ref: "Conversation",
+    required: true,
   },
-  groupType: {
-    type: "String",
-    enum: ["PUBLIC", "PRIVATE"],
+  message: {
+    type: String,
+    required: true,
   },
-  admin: {
+  fileUrl: {
+    type: String,
+  },
+  sentBy: {
     type: mongoose.SchemaTypes.ObjectId,
     ref: "User",
-  },
-  groupName: {
-    type: String,
     required: true,
   },
-  currentTopic: {
-    type: String,
-    required: true,
+  read: {
+    type: Boolean,
+    default: false,
   },
-},{
-  timestamps : true
 });
+
+const conversationSchema = new mongoose.Schema(
+  {
+    members: [{ type: mongoose.SchemaTypes.ObjectId, ref: "User" }],
+    convType: {
+      type: String,
+      enum: ["GROUP", "INDIVIDUAL"],
+    },
+    groupName: {
+      type: String,
+    },
+    groupDp: { type: String },
+    admins: [{ type: mongoose.SchemaTypes.ObjectId }],
+    createdBy: { type: mongoose.SchemaTypes.ObjectId, ref: "User" },
+    messages: [messageSchema],
+  },
+  {
+    timestamps: true,
+  }
+);
 
 export default mongoose.model("Conversation", conversationSchema);

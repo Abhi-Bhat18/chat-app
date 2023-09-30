@@ -4,6 +4,59 @@ import { UserAuthInfoRequest } from "../utils/interfaces.ts";
 import Conversation from "../models/conversationSchema.ts";
 import Message from "../models/messageSchema.ts";
 
+// desc - create a conversation for individual
+// route - /chat/group
+// method - POST
+// Access - USER
+export const createConversation = async (
+  req: UserAuthInfoRequest,
+  res: Response
+) => {
+  try {
+    const { memberId } = req.body;
+
+    // check wether the conversation alreay exsits or not
+    const convExsits = await Conversation.find({
+      $or: [
+        { members: [req.user?.id, memberId] },
+        { members: [memberId, req.user?.id] },
+      ],
+      convType: "INDIVIDUAL",
+    });
+
+    if (convExsits) return res.json(convExsits);
+
+    const conv = await Conversation.create({
+      members: [memberId, req.user?.id],
+      convType: "INDIVIDUAL",
+    });
+
+    return res.json(conv);
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: "Someting went wrong",
+    });
+  }
+};
+
+export const getAllConversation = async (
+  req: UserAuthInfoRequest,
+  res: Response
+) => {
+  try {
+    const conversations = await Conversation.find({
+      members: req.user?.id,
+    });
+
+    return res.json(conversations);
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: "Someting went wrong",
+    });
+  }
+};
 
 // desc - Create a group chat
 // route - /chat/group
@@ -39,14 +92,6 @@ export const createAGroup = async (req: UserAuthInfoRequest, res: Response) => {
 // Access - USER
 export const saveMessage = async (req: UserAuthInfoRequest, res: Response) => {
   try {
-    const { message, sentBy, conversationId, fileUrl } = req.body;
-    const saveMessage = await Message.create({
-      message,
-      conversationId,
-      sentBy,
-      fileUrl,
-    });
-
     return res.json({
       success: true,
       message: "Message Saved successfully",
@@ -96,11 +141,11 @@ export const joinGroup = async (req: UserAuthInfoRequest, res: Response) => {
 // Access - USER
 export const getMessages = async (req: UserAuthInfoRequest, res: Response) => {
   try {
-    const messages = await Message.find({
-      conversationId: req.query.convId,
-    })
-      .sort({ createdAt: -1 })
-      .limit(15);
+    const messages = await Conversation.findById(req.params.id).populate(
+      "messages"
+    );
+
+    return res.json(messages);
   } catch (error) {
     console.error(error);
     return res.status(500).json({
@@ -128,21 +173,4 @@ export const getGroups = async (req: UserAuthInfoRequest, res: Response) => {
       message: "Internal Server Error",
     });
   }
-};
-
-
-// desc - create a conversation for individual
-// route - /chat/group
-// method - POST
-// Access - USER
-export const createConversation = async (
-  req: UserAuthInfoRequest,
-  res: Response
-) => {
-  try {
-    const { memberId } = req.body;
-
-    // check wether the conversation alreay exsits or not
-    const convExsits = await Conversation.create({});
-  } catch (error) {}
 };

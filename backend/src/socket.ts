@@ -35,6 +35,7 @@ server.on("upgrade", function upgrade(request, socket, head) {
 
   try {
     const token = request.headers.cookie;
+    console.log('Auth Token',token);
     const verify = jwt.verify(
       token as string,
       process.env.JWT_SECRET as string

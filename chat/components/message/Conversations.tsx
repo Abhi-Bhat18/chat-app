@@ -1,8 +1,25 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { BiSearchAlt } from "react-icons/bi";
 import ConversationCard from "./ConversationCard";
+import { getAllUsers } from "@/actions/chatActioins";
+import ProfileCard from "../Profile/ProfileCard";
+import useAuth from "@/hooks/useAuth";
 
 const Conversations = () => {
+  const [data, setData] = useState<any[]>([]);
+  const { user } = useAuth();
+
+  useEffect(() => {
+    const fetchUsers = async () => {
+      const response = await getAllUsers();
+      console.log(response?.data);
+      if (response?.success) setData(response.data);
+      else alert("Something went wrong");
+    };
+
+    fetchUsers();
+  }, []);
+
   return (
     <div className="w-full p-2 space-y-5">
       {/* <--------------------Search Conversations----------------------> */}
@@ -16,10 +33,25 @@ const Conversations = () => {
       </div>
       {/* ------------------------- Conversations --------------------- */}
       <div className="space-y-5">
-        <ConversationCard />
-        <ConversationCard />
-        <ConversationCard />
-        <ConversationCard />
+        
+      </div>
+
+      {/* <------------------------------ Users ----------------------------------> */}
+      <div>
+        <p>Connect with Users</p>
+        {data.map((profile, index) => {
+          if (profile._id != user?._id) {
+            return (
+              <ProfileCard
+                fullName={profile.fullName}
+                userName={profile.userName}
+                imgUrl={profile.imgUrl}
+                _id={profile._id}
+                key={index}
+              ></ProfileCard>
+            );
+          }
+        })}
       </div>
     </div>
   );

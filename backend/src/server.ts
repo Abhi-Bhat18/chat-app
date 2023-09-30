@@ -7,6 +7,7 @@ import mongoose from "mongoose";
 
 import chatRoutes from './routes/messageRoutes.ts';
 import authRoutes from "./routes/authRoutes.ts";
+import userRoutes from './routes/userRoutes.ts';
 import { jwtAuthGuard } from "./middlewares/authMiddleware.ts";
 
 dotenv.config();
@@ -19,7 +20,7 @@ app.use(cookieParser());
 app.use(
   cors({
     origin: [
-      "https://localhost:3000",
+      "http://localhost:3000",
       "https://chat-app-snowy-nine.vercel.app"
     ],
     credentials: true,
@@ -32,6 +33,7 @@ mongoose
   .then(() => console.log("Database connected"))
   .catch((err) => console.log(err));
 
+app.use('/api/v1/user',userRoutes);
 app.use("/api/v1/auth", authRoutes);
 app.use('/api/v1/chat',jwtAuthGuard,chatRoutes);
 

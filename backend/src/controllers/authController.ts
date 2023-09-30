@@ -16,7 +16,7 @@ dotenv.config();
 const oauth2Client = new google.auth.OAuth2(
   process.env.OAUTH_CLIENT_ID as string,
   process.env.OAUTH_CLIENT_SECRET as string,
-  "https://localhost:443/api/v1/auth/google/callback"
+  "http://localhost:1337/api/v1/auth/google/callback"
 );
 
 // Access scopes for read-only Drive activity.
@@ -42,6 +42,7 @@ export const googleOAuth = (req: Request, res: Response) => {
 // access -public
 export const googleOAuthCallback = async (req: Request, res: Response) => {
   try {
+    console.log("google call back");
     // getting the authorization code from the callback
     let { code } = req.query;
 
@@ -66,11 +67,8 @@ export const googleOAuthCallback = async (req: Request, res: Response) => {
       const token = generateToken(userExist._id, userExist.email);
       res.cookie("token", token, {
         httpOnly: true,
-        secure: true,
-        sameSite: "none",
-        maxAge : 60 * 60 * 24
       });
-      return res.redirect("https://2a43-49-204-73-222.ngrok-free.app/chat");
+      return res.redirect("http://localhost:3000/message");
     }
     const userName = generateUserName(profile.data.name!);
 
@@ -85,10 +83,8 @@ export const googleOAuthCallback = async (req: Request, res: Response) => {
     const token = generateToken(user._id, user.email);
     res.cookie("token", token, {
       httpOnly: true,
-      secure: true,
-      sameSite: "none",
     });
-    return res.redirect("https://2a43-49-204-73-222.ngrok-free.app/chat");
+    return res.redirect("http://localhost:3000/message");
   } catch (error) {
     console.log(error);
     return res.json({
@@ -100,9 +96,9 @@ export const googleOAuthCallback = async (req: Request, res: Response) => {
 
 export const checkLogin = async (req: Request, res: Response) => {
   try {
-
+  
     const token = req.cookies.token;
-
+   
     if (!token)
       return res.status(401).json({
         success: false,
@@ -121,7 +117,7 @@ export const checkLogin = async (req: Request, res: Response) => {
       });
 
     const populateUser = await User.findById(decodedToken.id).lean();
-    console.log(populateUser);
+
     return res.json({
       success: true,
       populateUser,

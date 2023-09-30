@@ -2,9 +2,8 @@
 import React, { useState, useContext } from "react";
 import { AiOutlineSend } from "react-icons/ai";
 import { MdOutlineEmojiEmotions } from "react-icons/md";
-import EmojiPicker from "emoji-picker-react";
+import EmojiPicker,{EmojiClickData} from "emoji-picker-react";
 import { ChatContext } from "@/context/chat context/ChatConext";
-
 
 const MessageInput = () => {
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
@@ -17,11 +16,17 @@ const MessageInput = () => {
 
   const sendMessage = () => {
     //sending the message through the websocket
+    console.log(message);
     if (websocket?.OPEN) {
       websocket.send(message);
     }
     setMessage("");
   };
+
+  const handleEmoji = (emojiData: EmojiClickData, event: MouseEvent) => {
+    console.log(emojiData.emoji);
+    setMessage(prev => prev + emojiData.emoji);
+  }
 
   return (
     <div className="w-full absolute bottom-0 bg-white shadow-md flex justify-center p-5 space-x-5">
@@ -30,7 +35,7 @@ const MessageInput = () => {
       </button>
       {showEmojiPicker && (
         <div className="absolute bottom-20 left-0">
-          <EmojiPicker />
+          <EmojiPicker onEmojiClick={handleEmoji}/>
         </div>
       )}
       <input
