@@ -68,7 +68,7 @@ export const googleOAuthCallback = async (req: Request, res: Response) => {
       res.cookie("token", token, {
         httpOnly: true,
       });
-      return res.redirect("http://localhost:3000/message");
+      return res.redirect("http://localhost:5173/");
     }
     const userName = generateUserName(profile.data.name!);
 
@@ -84,7 +84,7 @@ export const googleOAuthCallback = async (req: Request, res: Response) => {
     res.cookie("token", token, {
       httpOnly: true,
     });
-    return res.redirect("http://localhost:3000/message");
+    return res.redirect("http://localhost:5173/");
   } catch (error) {
     console.log(error);
     return res.json({
@@ -120,7 +120,7 @@ export const checkLogin = async (req: Request, res: Response) => {
 
     return res.json({
       success: true,
-      populateUser,
+      user : populateUser,
     });
   } catch (error: any) {
     console.log(error);
