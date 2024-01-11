@@ -1,7 +1,6 @@
 import { Link } from "react-router-dom";
 
 const Login = () => {
-    
     return (
         <div className="w-screen h-screen flex justify-center items-center space-x-2">
             <p>This is login page</p>
