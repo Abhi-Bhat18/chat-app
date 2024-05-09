@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction, ErrorRequestHandler } from "express";
-import ApiError from "../utils/api/ApiErrot";
+import ApiError from '@chat/shared/src/api/ApiError'
 
 const errorHandler = (
   err: any,

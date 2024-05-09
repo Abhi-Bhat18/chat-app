@@ -21,3 +21,6 @@ class ApiResponse<T> {
     return new ApiResponse<null>(statusCode, null, message);
   }
 }
+
+
+export default ApiResponse

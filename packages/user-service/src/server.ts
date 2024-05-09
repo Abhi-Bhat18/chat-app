@@ -5,6 +5,7 @@ import cookieParser from "cookie-parser";
 
 import connectToMongoDB from "./db/mongodb";
 import appRouter from "./routes";
+import logger from "./middlewares/errorLogger";
 
 dotenv.config();
 
@@ -32,7 +33,8 @@ const server = async () => {
     app.use(appRouter);
 
     app.get("/", (req, res) => {
-      res.json({ status: "ok" });
+      logger.info('This is the test log')
+      res.json({ status: "ok", service: "user-service" });
     });
 
     return app;
@@ -42,8 +44,10 @@ const server = async () => {
   }
 };
 
+const port = process.env.PORT || 1335;
+
 server()
   .then((app) =>
-    app?.listen("1337", () => console.log("Server is up and running at 1337"))
+    app?.listen(port, () => console.log(`Server is up and running at ${port}`))
   )
   .catch((err) => console.log(err));

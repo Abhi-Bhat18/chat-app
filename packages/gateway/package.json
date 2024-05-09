@@ -1,0 +1,16 @@
+{
+  "name": "gateway",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "dev" : "nodemon --exec tsx index.ts"
+  },
+  "dependencies": {
+    "express": "^4.19.2",
+    "express-http-proxy": "^2.0.0"
+  },
+  "devDependencies": {
+    "@types/express-http-proxy": "^1.6.6"
+  }
+}

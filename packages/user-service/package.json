@@ -31,7 +31,7 @@
     "winston": "^3.13.0",
     "ws": "^8.13.0",
     "zod": "^3.21.4",
-    "@chat/shared": "*"
+    "@chat/shared" : "1.0.0"
   },
   "name": "backend",
   "version": "1.0.0",

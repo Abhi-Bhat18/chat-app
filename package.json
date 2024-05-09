@@ -11,8 +11,9 @@
     "packages/*"
   ],
   "scripts": {
-    "dev" : "cd ./packages/api && yarn dev & cd packages/chat-client && yarn dev",
+    "dev" : "cd ./packages/user-service && yarn dev & cd packages/ui && yarn dev & cd ./packages/gateway && yarn dev",
     "dev:client" : "cd ./packages/chat-client && yarn dev",
-    "dev:api" : "cd ./packages/api && yarn dev"
+    "dev:user" : "cd ./packages/user-service && yarn dev",
+    "dev:gateway" : "cd ./packages/gateway && yarn dev"
   }
 }

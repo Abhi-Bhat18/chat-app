@@ -14,10 +14,16 @@
     "esModuleInterop": true /* Emit additional JavaScript to ease support for 
     "strict": true,                                      /* Enable all strict type-checking options. */,
     "skipLibCheck": true,
+    "composite": true,
     "typeRoots": [
       "./node_modules/@types",
       "src/types"
     ] /* Skip type checking all .d.ts files. */
   },
-  "include": ["src/custom.d"]
+  "include": ["src/custom.d"],
+  "references": [
+    {
+      "path": "../shared"
+    }
+  ]
 }
