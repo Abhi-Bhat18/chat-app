@@ -1,9 +1,9 @@
-import { Request, Response, RequestHandler, NextFunction } from "express";
+import { Request, Response } from "express";
 import { google } from "googleapis";
 import dotenv from "dotenv";
-import jwt, { JwtPayload } from "jsonwebtoken";
+import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
-import ApiError from "@chat/shared/src/api/ApiError";
+import { ApiResponse, ApiError, asyncHandler } from "@chat/shared";
 
 import User from "../model/user.model";
 import {
@@ -12,9 +12,6 @@ import {
   JwtPayloadInterface,
 } from "../helpers/authHelper";
 
-import asyncHandler from "../utils/asyncHandler";
-
-import ApiResponse from "@chat/shared/src/api/ApiResponse";
 
 dotenv.config();
 
@@ -52,7 +49,7 @@ export const googleOAuthCallback = asyncHandler(
   async (req: Request, res: Response) => {
     const { code } = req.query;
 
-    if (!code) throw new ApiError(400, 'Invalid Request')
+    if (!code) throw new ApiError(400, "Invalid Request");
 
     // get the token from the google by giving the CODE
     const { tokens } = await oauth2Client.getToken(code as string);
@@ -62,7 +59,6 @@ export const googleOAuthCallback = asyncHandler(
     const profile = await google
       .oauth2("v2")
       .userinfo.get({ auth: oauth2Client });
-
 
     const userExist = await User.findOne({ email: profile.data.email });
 
@@ -169,4 +165,12 @@ export const checkLogin = asyncHandler(async (req: Request, res: Response) => {
   return res.json(
     new ApiResponse(200, populateUser, "User info fetched successfully")
   );
+});
+
+export const logOut = asyncHandler(async (req: Request, res: Response) => {
+
+  // clear the cookie 
+  res.clearCookie('token')
+
+  return res.json(new ApiResponse(200, ))
 });

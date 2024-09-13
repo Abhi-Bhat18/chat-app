@@ -9,9 +9,9 @@ const messageSchema = new mongoose.Schema(
     },
     message: { type: String, required: true },
     sentBy: { type: String, required: true },
+    readBy: [{ type: mongoose.Schema.Types.ObjectId }],
   },
   { timestamps: true }
 );
 
-
-export default mongoose.model('Message', messageSchema);
+export default mongoose.model("Message", messageSchema);

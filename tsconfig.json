@@ -1,10 +1,18 @@
-{ 
-    "references": [
-        {
-            "path": "./packages/shared"
-        },
-        {
-            "path": "./packages/user-service"
-        }
-    ]
-}
+{
+    "compilerOptions": {
+      "sourceMap": true,
+      "removeComments": true,
+  
+      "strict": true,
+      "noImplicitAny": true,
+      "strictNullChecks": true,
+      "strictFunctionTypes": true,
+      "noImplicitThis": true,
+      "alwaysStrict": true,
+  
+      "noUnusedLocals": true,
+      "noUnusedParameters": true,
+      "noImplicitReturns": true,
+      "noFallthroughCasesInSwitch": true
+    }
+  }

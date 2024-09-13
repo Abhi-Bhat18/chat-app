@@ -1,4 +1,4 @@
-import express, { RouterOptions } from "express";
+import express from "express";
 import {
   signUp,
   singIn,
@@ -6,13 +6,16 @@ import {
   googleOAuth,
   googleOAuthCallback,
 } from "../controllers/auth.controller";
+import requestBodyValidation from "../middlewares/bodyValidation";
+import { signInValidation, signUpValidation } from "../helpers/validation.helper";
+import { jwtAuthGuard } from "../middlewares/authMiddleware";
 
 const router = express.Router();
 
-router.post("/sign-up", signUp);
-router.post("/sign-in", singIn);
+router.post("/sign-up", requestBodyValidation(signUpValidation), signUp);
+router.post("/sign-in", requestBodyValidation(signInValidation), singIn);
 router.get("/google", googleOAuth);
 router.get("/google/callback", googleOAuthCallback);
-router.get("/check", checkLogin);
+router.get("/check", jwtAuthGuard , checkLogin);
 
 export default router;

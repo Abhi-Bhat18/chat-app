@@ -11,6 +11,11 @@ const conversationSchema = new mongoose.Schema(
         imgUrl: { type: String },
       },
     ],
+    conversationType: {
+      type: String,
+      required: true,
+      enum: ["one-to-one", "group"],
+    },
   },
   {
     timestamps: true,

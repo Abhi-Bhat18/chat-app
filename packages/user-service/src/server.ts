@@ -5,7 +5,7 @@ import cookieParser from "cookie-parser";
 
 import connectToMongoDB from "./db/mongodb";
 import appRouter from "./routes";
-import logger from "./middlewares/errorLogger";
+import logger from "./utils/logger";
 
 dotenv.config();
 

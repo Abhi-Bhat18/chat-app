@@ -1,4 +1,4 @@
-class ApiResponse<T> {
+export class ApiResponse<T> {
   public statusCode: number;
   public data: T | null;
   public message: string | null;
@@ -21,6 +21,3 @@ class ApiResponse<T> {
     return new ApiResponse<null>(statusCode, null, message);
   }
 }
-
-
-export default ApiResponse

@@ -6,8 +6,8 @@ import userRoutes from "./routes/user.routes";
 
 const appRouter = Router();
 
-appRouter.use("/api/v1/auth", authRoutes);
-appRouter.use("/api/v1/user", jwtAuthGuard, userRoutes);
+appRouter.use("/auth", authRoutes);
+appRouter.use("/user", jwtAuthGuard, userRoutes);
 // appRouter.use("/api/v1/conversation", jwtAuthGuard, messageRoutes);
 
 

@@ -1,8 +1,6 @@
 import User from "../model/user.model";
 import { Response, Request } from "express";
-import asyncHandler from "../utils/asyncHandler";
-import ApiResponse from "@chat/shared/src/api/ApiResponse";
-import ApiError from "@chat/shared/src/api/ApiError";
+import { ApiResponse, ApiError, asyncHandler } from "@chat/shared";
 
 /**
  * Retrieves all users from the database.
@@ -19,7 +17,7 @@ export const getAllUsers = async (req: Request, res: Response) => {
 
     const users = await User.find({
       _id: {
-        $ne: req.token?._id,
+        $ne: req.token?.id,
       },
     })
       .select("fullName userName imgUrl")
@@ -42,7 +40,7 @@ export const getAllUsers = async (req: Request, res: Response) => {
 
 export const getProfile = asyncHandler(async (req: Request, res: Response) => {
   // get the user by id
-  const user = await User.findById(req.token.id);
+  const user = await User.findById(req.token?.id);
 
   if (!user) throw new ApiError(404, "Unable data not found");
 
@@ -54,7 +52,7 @@ export const updateProfile = asyncHandler(
     // get the data from the body
 
     const user = await User.findByIdAndUpdate(
-      req.token.id,
+      req.token?.id,
       {
         $set: {
           ...req.body,
@@ -69,3 +67,23 @@ export const updateProfile = asyncHandler(
   }
 );
 
+export const getUsers = asyncHandler(async (req: Request, res: Response) => {
+  
+  // get the user array from the query
+  let { ids } = req.query;
+
+  if (ids && typeof ids == "string") {
+    ids = ids.split(",");
+  }else throw new ApiError(400, 'Bad request')
+
+  // get the user
+  const users = await User.find({
+    _id: {
+      $in: { ids },
+    },
+  }).select('firstName lastName imgUrl userName');
+
+  console.log("Users", users);
+
+  return res.json(new ApiResponse(200, users, 'Users fetched successfully'))
+});

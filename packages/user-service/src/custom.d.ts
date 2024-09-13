@@ -3,7 +3,12 @@ import {WebSocket} from "ws";
 
 declare module 'express-serve-static-core'{
   export interface Request {
-    token?: any
+    token?: { 
+      id : string,
+      email : string,
+      iat : number,
+      exp : number
+    }
   }
 }
 

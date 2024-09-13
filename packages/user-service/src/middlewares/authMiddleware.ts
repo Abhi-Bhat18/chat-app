@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import jwt, { JwtPayload } from "jsonwebtoken";
-import cookieParser from "cookie-parser";
+
 import dotenv from "dotenv";
 
 dotenv.config();

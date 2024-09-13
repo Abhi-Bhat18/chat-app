@@ -7,13 +7,16 @@
   "author": "Abhishek Bhat",
   "license": "MIT",
   "private": true,
-  "workspaces" : [
+  "workspaces": [
     "packages/*"
   ],
   "scripts": {
-    "dev" : "cd ./packages/user-service && yarn dev & cd packages/ui && yarn dev & cd ./packages/gateway && yarn dev",
-    "dev:client" : "cd ./packages/chat-client && yarn dev",
-    "dev:user" : "cd ./packages/user-service && yarn dev",
-    "dev:gateway" : "cd ./packages/gateway && yarn dev"
+    "dev": "cd ./packages/user-service && yarn dev & cd packages/ui && yarn dev & cd ./packages/gateway && yarn dev",
+    "dev:client": "cd ./packages/chat-client && yarn dev",
+    "dev:user": "cd ./packages/user-service && yarn dev",
+    "dev:gateway": "cd ./packages/gateway && yarn dev"
+  },
+  "devDependencies": {
+    "eslint": "^9.2.0"
   }
 }

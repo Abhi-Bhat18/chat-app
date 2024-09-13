@@ -1,9 +1,11 @@
 {
   "name": "@chat/shared",
   "version": "1.0.0",
+  "main": "dist/index.js",
+  "typings": "dist/index.d.ts",
   "description": "Shared package for the repository",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+   "build" : "tsc"
   },
   "author": "",
   "license": "ISC"
